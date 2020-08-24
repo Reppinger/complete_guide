@@ -17,6 +17,6 @@ jobs:
       xcode: 11.3.0
     steps:
       - checkout
-      - run:
-        name: Flutter Clean
-        command: flutter clean
+      # - run:
+      #   name: Flutter Clean
+      #   command: flutter clean
