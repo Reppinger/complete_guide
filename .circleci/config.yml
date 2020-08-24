@@ -12,10 +12,13 @@ jobs:
           name: Run Flutter doctor
           command: flutter doctor
 
-      # - run:
-      #     name: Run the application tests
-      #     command: flutter test
-
+      - run:
+          name: Run the application tests
+          command: flutter test
+          
+      - store_test_results:
+            path: test-results
+        
       - run:
           name: Build the Android version
           command: flutter build apk --no-shrink
