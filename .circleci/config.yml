@@ -14,8 +14,8 @@ jobs:
 
       - run:
           name: Run the application tests
-          command: flutter test
-          
+          command: flutter test --machine test-results/
+
       - store_test_results:
             path: test-results
         
@@ -23,3 +23,6 @@ jobs:
           name: Build the Android version
           command: flutter build apk --no-shrink
 
+      -run:
+          name: See working directory in log
+          command: ls -al
