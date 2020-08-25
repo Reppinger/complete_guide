@@ -12,7 +12,7 @@ jobs:
           name: Run Flutter doctor
           command: flutter doctor
 
-      -run:
+      - run:
           name: Create Test Results directory
           command: mkdir -p test-results
 
