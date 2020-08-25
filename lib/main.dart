@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext Context) {
+  Widget build(BuildContext context) {
     var questions = [
       'What is your favorite color?',
       'What\'s your favorite animal?',
