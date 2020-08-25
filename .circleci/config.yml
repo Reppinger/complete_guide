@@ -12,21 +12,14 @@ jobs:
           name: Run Flutter doctor
           command: flutter doctor
 
-      - run:
-          name: Create directories for analyze and test results
-          command: |
-            mkdir -p analyze
-            mkdir -p test-results
-
       - run:  
           name: Run Flutter analyze
-          command: flutter analyze --write=analyze/results.txt
-        
-      - run:
-          name: Install lcov for HTML code coverage report
           command: |
-            sudo apt-get update -qq -y
-            sudo apt-get install lcov -y
+            mkdir -p analyze
+            flutter analyze --write=analyze/results.txt
+
+      - store_artifacts:
+          path: analyze/        
 
       - run:
           name: Run unit tests with junit formatter
@@ -34,24 +27,25 @@ jobs:
             export PATH="$PATH":"$HOME/.pub-cache/bin" 
             export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
             flutter pub global activate junitreport
+            mkdir -p test-results
             flutter test --coverage --machine | tojunit --output test-results/unit.xml
+
+      - store_test_results:
+          path: test-results
 
       - run:
           name: Generate code coverage HTML file
-          command: genhtml coverage/lcov.info -o coverage/html  
-    
-      - store_test_results:
-          path: test-results
-        
+          command: |
+            sudo apt-get update -qq -y
+            sudo apt-get install lcov -y
+            genhtml coverage/lcov.info -o coverage/html  
+              
+      - store_artifacts:
+          path: coverage/
+              
       - run:
           name: Build the Android version
           command: flutter build apk --no-shrink
-
-      - store_artifacts:
-          path: coverage/
-
-      - store_artifacts:
-          path: analyze/        
   
       - store_artifacts:
-         path: build/app/outputs/
+          path: build/app/outputs/
