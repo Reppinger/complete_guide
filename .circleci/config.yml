@@ -17,13 +17,10 @@ jobs:
           command: mkdir -p test-results
 
       - run:
-          name: Add Flutter pub-cache and Dart SDK bins to shell path
+          name: Get Dart jUnit test report formatter
           command: export PATH="$PATH":"$HOME/.pub-cache/bin"
                    export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
-  
-      - run:
-          name: Get Dart jUnit test report formatter
-          command: flutter pub global activate junitreport
+                   flutter pub global activate junitreport
            
       - run:
           name: Run the application tests
