@@ -17,15 +17,24 @@ jobs:
           command: mkdir -p test-results
 
       - run:
+          name: Install lcov for HTML code coverage report
+          command: |
+            sudo apt-get update -qq -y
+            sudo apt-get install lcov -y
+
+      - run:
           name: Run unit tests with junit formatter
           command: |
             export PATH="$PATH":"$HOME/.pub-cache/bin" 
             export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
             flutter pub global activate junitreport
-            flutter test --machine | tojunit --output test-results/unit.xml
+            flutter test --coverage --machine | tojunit --output test-results/unit.xml
 
+      - store_artifacts:
+          path: coverage/
+       
       - store_test_results:
-            path: test-results
+          path: test-results
         
       - run:
           name: Build the Android version
