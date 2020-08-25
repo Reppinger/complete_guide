@@ -17,6 +17,10 @@ jobs:
           command: mkdir -p test-results
 
       - run:
+          name: Add Flutter pub-cache bin to shell path
+          command: export PATH="$PATH":"$HOME/.pub-cache/bin"
+
+      - run:
           name: Add Dart-SDK bin to shell path
           command: export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
   
