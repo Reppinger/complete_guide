@@ -17,8 +17,16 @@ jobs:
           command: mkdir -p test-results
 
       - run:
+          name: Add Dart-SDK bin to shell path
+          command: export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
+  
+      - run:
+          name: Get Dart jUnit test report formatter
+          command: flutter pub global activate junitreport
+           
+      - run:
           name: Run the application tests
-          command: flutter test --machine > test-results/unit.json
+          command: flutter test --machine | tojunit --output test-results/unit.xml
 
       - store_test_results:
             path: test-results
