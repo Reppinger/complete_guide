@@ -23,6 +23,6 @@ jobs:
           name: Build the Android version
           command: flutter build apk --no-shrink
 
-      -run:
+      - run:
           name: See working directory in log
           command: ls -al
