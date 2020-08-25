@@ -36,14 +36,17 @@ class _MyAppState extends State<MyApp> {
               RaisedButton(
                 child: Text('Answer 1'),
                 onPressed: answerQuestion,
+                key: Key('Answer1'),
               ),
               RaisedButton(
                 child: Text('Answer 2'),
                 onPressed: answerQuestion,
+                key: Key('Answer2'),
               ),
               RaisedButton(
                 child: Text('Answer 3'),
                 onPressed: answerQuestion,
+                key: Key('Answer3'),
               ),
             ],
           )),
