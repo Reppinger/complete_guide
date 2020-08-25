@@ -46,9 +46,9 @@ jobs:
           command: flutter build apk --no-shrink
 
       - store_artifacts:
-            path: coverage/
+          path: coverage/
 
-       - store_artifacts:
+      - store_artifacts:
           path: analyze/        
   
       - store_artifacts:
