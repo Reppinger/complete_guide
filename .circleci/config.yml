@@ -11,7 +11,11 @@ jobs:
       - run:
           name: Run Flutter doctor
           command: flutter doctor
-
+                    
+      - run:
+          name: Run Flutter analyze
+          command: flutter analyze --write=analyze/results.txt
+    
       - run:
           name: Create Test Results directory
           command: mkdir -p test-results
@@ -34,9 +38,6 @@ jobs:
           name: Generate code coverage HTML file
           command: genhtml coverage/lcov.info -o coverage/html  
     
-      - store_artifacts:
-          path: coverage/
-       
       - store_test_results:
           path: test-results
         
@@ -44,5 +45,11 @@ jobs:
           name: Build the Android version
           command: flutter build apk --no-shrink
 
+      - store_artifacts:
+            path: coverage/
+
+       - store_artifacts:
+          path: analyze/        
+  
       - store_artifacts:
          path: build/app/outputs/
