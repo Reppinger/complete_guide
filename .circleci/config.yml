@@ -19,9 +19,9 @@ jobs:
       - run:
           name: Get Dart jUnit test report formatter
           command: |
-          export PATH="$PATH":"$HOME/.pub-cache/bin" 
-          export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
-          flutter pub global activate junitreport
+            export PATH="$PATH":"$HOME/.pub-cache/bin" 
+            export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
+            flutter pub global activate junitreport
            
       - run:
           name: Run the application tests
