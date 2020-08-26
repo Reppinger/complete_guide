@@ -28,7 +28,7 @@ jobs:
             fi
 
       - store_artifacts:
-          path: analyze/        
+          path: analyze-results/        
 
       - run:
           name: Run unit tests with junit formatter
