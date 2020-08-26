@@ -19,7 +19,7 @@ jobs:
             OUTPUT="$(flutter analyze --write=analyze-results/results.txt"
             echo "$OUTPUT"
             echo
-            if grep -q "error •" <<< "$OUTPUT"; then
+            if grep -q "error •" \<\<\< "$OUTPUT"; then
                 echo "flutter analyze found errors"
                 exit 1
             else
