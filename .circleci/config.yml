@@ -15,6 +15,7 @@ jobs:
       - run:  
           name: Run Flutter analyze
           command: |
+            set +e
             mkdir -p analyze-results
             OUTPUT="$(flutter analyze --write=analyze-results/results.txt)"
             echo "$OUTPUT"
