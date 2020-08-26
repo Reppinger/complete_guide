@@ -16,7 +16,7 @@ jobs:
           name: Run Flutter analyze
           command: |
             mkdir -p analyze-results
-            OUTPUT="$(flutter analyze --write=analyze-results/results.txt"
+            OUTPUT="$(flutter analyze --write=analyze-results/results.txt")
             echo "$OUTPUT"
             echo
             if grep -q "error •" \<<< "$OUTPUT"; then
