@@ -15,8 +15,17 @@ jobs:
       - run:  
           name: Run Flutter analyze
           command: |
-            mkdir -p analyze
-            flutter analyze --write=analyze/results.txt
+            mkdir -p analyze-results
+            OUTPUT="$(flutter analyze --write=analyze-results/results.txt"
+            echo "$OUTPUT"
+            echo
+            if grep -q "error •" <<< "$OUTPUT"; then
+                echo "flutter analyze found errors"
+                exit 1
+            else
+                echo "flutter analyze didn't find any errors (only warnings and info)"
+                exit 0
+            fi
 
       - store_artifacts:
           path: analyze/        
