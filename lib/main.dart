@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
           appBar: AppBar(
             title: Text('My First App'),
+            key: Key('AppBar'),
           ),
           body: Column(
             children: [
