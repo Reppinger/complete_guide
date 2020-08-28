@@ -12,7 +12,7 @@ jobs:
           name: Run Flutter doctor
           command: |
             flutter doctor
-            java -version
+            avdmanager
 
       - run:  
           name: Run Flutter analyze
