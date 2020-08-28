@@ -43,7 +43,8 @@ jobs:
       - run:
           name: Run flutter_driver integration tests
           command: |
-            echo no | avdmanager create avd -n TestAVD -k "system-images;android-29;google_apis;x86"
+            avdmanager list target
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --device "pixel" --package "system-images;android-29;google_apis;x86" --abi "x86"
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
       - store_test_results:
