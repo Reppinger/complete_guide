@@ -28,25 +28,27 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
           appBar: AppBar(
             title: Text('My First App'),
-            key: Key('AppBar'),
+            key: Key('appBar'),
           ),
           body: Column(
             children: [
-              Text(questions[_questionIndex]),
+              Text(questions[_questionIndex],
+              key: Key('question'),
+              ),
               RaisedButton(
                 child: Text('Answer 1'),
                 onPressed: answerQuestion,
-                key: Key('Answer1'),
+                key: Key('answer1'),
               ),
               RaisedButton(
                 child: Text('Answer 2'),
                 onPressed: answerQuestion,
-                key: Key('Answer2'),
+                key: Key('answer2'),
               ),
               RaisedButton(
                 child: Text('Answer 3'),
                 onPressed: answerQuestion,
-                key: Key('Answer3'),
+                key: Key('answer3'),
               ),
             ],
           )),
