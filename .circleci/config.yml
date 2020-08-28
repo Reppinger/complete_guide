@@ -10,7 +10,9 @@ jobs:
 
       - run:
           name: Run Flutter doctor
-          command: flutter doctor
+          command: |
+            flutter doctor
+            java -version
 
       - run:  
           name: Run Flutter analyze
