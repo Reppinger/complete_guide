@@ -10,9 +10,7 @@ jobs:
 
       - run:
           name: Run Flutter doctor
-          command: |
-            flutter doctor
-            avdmanager list target
+          command: flutter doctor
 
       - run:  
           name: Run Flutter analyze
@@ -41,6 +39,11 @@ jobs:
             flutter pub global activate junitreport
             mkdir -p test-results
             flutter test --coverage --machine | tojunit --output test-results/unit.xml
+
+      - run:
+          name: Run flutter_driver integration tests
+          command: |
+            echo no | avdmanager create avd -n TestAVD -k "system-images;android-29;google_apis;x86"
             flutter drive --target=test_driver/complete_guide_app.dart 
 
       - store_test_results:
