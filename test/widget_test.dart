@@ -12,7 +12,7 @@ import 'package:complete_guide/main.dart';
 void main() {
   testWidgets('Clicking answer changes question text',
       (WidgetTester tester) async {
-    final answer1TestKey = Key('Answer1');
+    final answer1TestKey = Key('answer1');
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
