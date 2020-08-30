@@ -17,7 +17,7 @@ void main() {
     await tester.pumpWidget(MyApp());
 
     // Verify that our counter starts at 0.
-    expect(find.text('What is your favorite color?'), findsOneWidget);
+    expect(find.text('What\'s your favorite color?'), findsOneWidget);
     expect(find.text('What\'s your favorite animal?'), findsNothing);
 
     // Tap the 'Answer 1' button and change the question.
@@ -25,7 +25,7 @@ void main() {
     await tester.pump();
 
     // Verify that our counter has incremented.
-    expect(find.text('What is your favorite color?'), findsNothing);
+    expect(find.text('What\'s your favorite color?'), findsNothing);
     expect(find.text('What\'s your favorite animal?'), findsOneWidget);
   });
 }
