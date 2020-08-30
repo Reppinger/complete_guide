@@ -47,9 +47,11 @@ class _MyAppState extends State<MyApp> {
             children: [
               Question(
                 questions[_questionIndex]['questionText'] as String,
-                Key('question'),
+                'question',
               ),
-              ...(questions[_questionIndex]['answers'] as List<String>).asMap().entries
+              ...(questions[_questionIndex]['answers'] as List<String>)
+                  .asMap()
+                  .entries
                   .map((answer) {
                 return Answer(_answerQuestion, answer);
               }).toList(),

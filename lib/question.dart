@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class Question extends StatelessWidget {
   final String questionText;
+  final String textKey;
 
-  Question(this.questionText, Key key) : super(key: key);
+  Question(this.questionText, this.textKey);
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class Question extends StatelessWidget {
           questionText,
           style: TextStyle(fontSize: 24),
           textAlign: TextAlign.center,
+          key: Key(textKey),
         ));
   }
 }
