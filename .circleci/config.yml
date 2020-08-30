@@ -32,7 +32,7 @@ jobs:
           path: analyze-results/        
 
       - run:
-          name: Run unit & driver tests with junit formatter
+          name: Run unit tests with junit formatter
           command: |
             export PATH="$PATH":"$HOME/.pub-cache/bin" 
             export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
@@ -46,7 +46,7 @@ jobs:
             sdkmanager "system-images;android-29;google_apis;x86"
             sdkmanager --list | sed -e '/Available Packages/q'
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x86"
-            #flutter drive --target=./test_driver/complete_guide_app.dart 
+            # flutter drive --target=./test_driver/complete_guide_app.dart 
 
       - store_test_results:
           path: test-results
