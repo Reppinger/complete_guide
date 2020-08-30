@@ -20,7 +20,7 @@ void main(){
 
     test('starts at question 1', () async {
       var question = await driver.getText(questionTextFinder);
-      expect(question, 'What is your favorite color?');
+      expect(question, 'What\'s your favorite color?');
     });
 
     test('clicking answer increments question', () async {
