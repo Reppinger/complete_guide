@@ -30,30 +30,30 @@ jobs:
                 exit 0
             fi
 
-#       - store_artifacts:
-#           path: analyze-results/     
+      - store_artifacts:
+          path: analyze-results/     
 
-#       - run:
-#           name: Run unit tests with junit formatter
-#           command: |
-#             export PATH="$PATH":"$HOME/.pub-cache/bin" 
-#             export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
-#             flutter pub global activate junitreport
-#             mkdir -p test-results
-#             flutter test --coverage --machine | tojunit --output test-results/unit.xml
+      - run:
+          name: Run unit tests with junit formatter
+          command: |
+            export PATH="$PATH":"$HOME/.pub-cache/bin" 
+            export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
+            flutter pub global activate junitreport
+            mkdir -p test-results
+            flutter test --coverage --machine | tojunit --output test-results/unit.xml
       
-#       - store_test_results:
-#           path: test-results
+      - store_test_results:
+          path: test-results
 
-#       - run:
-#           name: Generate code coverage HTML file
-#           command: |
-#             sudo apt-get update -qq -y
-#             sudo apt-get install lcov -y
-#             genhtml coverage/lcov.info -o coverage/html  
+      - run:
+          name: Generate code coverage HTML file
+          command: |
+            sudo apt-get update -qq -y
+            sudo apt-get install lcov -y
+            genhtml coverage/lcov.info -o coverage/html  
               
-#       - store_artifacts:
-#           path: coverage/
+      - store_artifacts:
+          path: coverage/
 
 #       - run:
 #           name: Build the Android version
