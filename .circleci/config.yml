@@ -49,7 +49,9 @@ jobs:
       
       - run:
           name: Run flutter_driver integration tests
-          command: flutter drive --target=./test_driver/complete_guide_app.dart 
+          command: |
+            sleep 60s
+            flutter drive --target=./test_driver/complete_guide_app.dart 
 
     #   - store_test_results:
     #       path: test-results
