@@ -92,7 +92,7 @@ jobs:
             set +e
             sdkmanager "system-images;android-29;google_apis;x86" 
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x86"
-            emulator -avd TestAVD -no-audio -no-window
+            emulator -avd TestAVD -no-audio -no-window -no-accel
       - run:
           name: wait for emulator
           no_output_timeout: 15m
