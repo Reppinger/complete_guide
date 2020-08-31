@@ -8,33 +8,33 @@ jobs:
     steps:
       - checkout
 
-      - run:  
-          name: Run Flutter analyze
-          command: |
-            set +e
-            mkdir -p analyze-results
-            OUTPUT="$(flutter analyze --write=analyze-results/results.txt)"
-            echo "$OUTPUT"
-            echo
-            if grep -q "error •" \<<< "$OUTPUT"; then
-                echo "flutter analyze found errors"
-                exit 1
-            else
-                echo "flutter analyze didn't find any errors (only warnings and info)"
-                exit 0
-            fi
+    #   - run:  
+    #       name: Run Flutter analyze
+    #       command: |
+    #         set +e
+    #         mkdir -p analyze-results
+    #         OUTPUT="$(flutter analyze --write=analyze-results/results.txt)"
+    #         echo "$OUTPUT"
+    #         echo
+    #         if grep -q "error •" \<<< "$OUTPUT"; then
+    #             echo "flutter analyze found errors"
+    #             exit 1
+    #         else
+    #             echo "flutter analyze didn't find any errors (only warnings and info)"
+    #             exit 0
+    #         fi
 
-      - store_artifacts:
-          path: analyze-results/        
+    #   - store_artifacts:
+    #       path: analyze-results/        
 
-      - run:
-          name: Run unit tests with junit formatter
-          command: |
-            export PATH="$PATH":"$HOME/.pub-cache/bin" 
-            export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
-            flutter pub global activate junitreport
-            mkdir -p test-results
-            flutter test --coverage --machine | tojunit --output test-results/unit.xml
+    #   - run:
+    #       name: Run unit tests with junit formatter
+    #       command: |
+    #         export PATH="$PATH":"$HOME/.pub-cache/bin" 
+    #         export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
+    #         flutter pub global activate junitreport
+    #         mkdir -p test-results
+    #         flutter test --coverage --machine | tojunit --output test-results/unit.xml
 
       - run:
           name: Run flutter_driver integration tests
@@ -44,7 +44,7 @@ jobs:
             # sdkmanager --install "platform-tools" "platforms;android-29" "build-tools;29.0.2"
             sdkmanager --list | sed -e '/Installed Packages/q'
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;default;x86_64"
-            emulator -avd TestAVD -gpu auto
+            emulator -avd TestAVD -gpu swiftshader_indirect
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
       - store_test_results:
