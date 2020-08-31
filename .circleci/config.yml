@@ -106,7 +106,7 @@ jobs:
       - run:
           name: Execute integration tests
           command: |
-          #   sleep 90s
+            #   sleep 90s
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
 workflows:
