@@ -8,10 +8,6 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Run Flutter doctor
-          command: flutter doctor
-
       - run:  
           name: Run Flutter analyze
           command: |
