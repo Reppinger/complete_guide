@@ -90,8 +90,8 @@ jobs:
           background: true
           command: |
             set +e
-            sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
+            sdkmanager "system-images;android-29;google_apis;x86a" 
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x86"
             emulator -avd TestAVD -no-audio -no-window
       - run:
           name: wait for emulator
