@@ -39,29 +39,29 @@ jobs:
       - run:
           name: Run emulator
           command: |
-            sdkmanager "system-images;android-29;default;x86_64"
-            # sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;default;x86_64"
+            # sdkmanager "system-images;android-29;default;x86_64"
+            sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
             echo "====== TestAVD created ====="
-            emulator -avd TestAVD -accel off -no-window
-#Will emulator stay running for next command?
+            # emulator -avd TestAVD -accel off -no-window
+            emulator -avd TestAVD -no-audio -no-window
+      
       - run:
           name: Run flutter_driver integration tests
-          command: |
-            flutter drive --target=./test_driver/complete_guide_app.dart 
+          command: flutter drive --target=./test_driver/complete_guide_app.dart 
 
-      - store_test_results:
-          path: test-results
+    #   - store_test_results:
+    #       path: test-results
 
-      - run:
-          name: Generate code coverage HTML file
-          command: |
-            sudo apt-get update -qq -y
-            sudo apt-get install lcov -y
-            genhtml coverage/lcov.info -o coverage/html  
+    #   - run:
+    #       name: Generate code coverage HTML file
+    #       command: |
+    #         sudo apt-get update -qq -y
+    #         sudo apt-get install lcov -y
+    #         genhtml coverage/lcov.info -o coverage/html  
               
-      - store_artifacts:
-          path: coverage/
+    #   - store_artifacts:
+    #       path: coverage/
               
       - run:
           name: Build the Android version
