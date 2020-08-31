@@ -43,7 +43,7 @@ jobs:
             sdkmanager "system-images;android-29;default;x86_64"
             # sdkmanager --list | sed -e '/Installed Packages/q'
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;default;x86_64"
-            emulator -avd TestAVD -gpu off
+            emulator -avd TestAVD -noaudio -no-boot-anim -gpu off
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
       - store_test_results:
