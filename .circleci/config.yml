@@ -38,18 +38,13 @@ jobs:
 
       - run:
           name: Run emulator
-          background: true
           command: |
             # sdkmanager "system-images;android-29;default;x86_64"
             sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
             echo "====== TestAVD created ====="
             # emulator -avd TestAVD -accel off -no-window
-            emulator -avd TestAVD -no-audio -no-window
-      
-      - run:
-          name: Run flutter_driver integration tests
-          command: |
+            emulator -avd TestAVD -no-audio -no-window &
             sleep 90s
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
