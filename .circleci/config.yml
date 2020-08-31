@@ -1,70 +1,105 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+
 jobs:
-  build:    
+  checkout_code:
     docker:
       - image: cirrusci/flutter:1.20.2 
-
+    working_directory: ~/workflow
     steps:
       - checkout
 
-    #   - run:  
-    #       name: Run Flutter analyze
-    #       command: |
-    #         set +e
-    #         mkdir -p analyze-results
-    #         OUTPUT="$(flutter analyze --write=analyze-results/results.txt)"
-    #         echo "$OUTPUT"
-    #         echo
-    #         if grep -q "error •" \<<< "$OUTPUT"; then
-    #             echo "flutter analyze found errors"
-    #             exit 1
-    #         else
-    #             echo "flutter analyze didn't find any errors (only warnings and info)"
-    #             exit 0
-    #         fi
+  build:
+    docker:
+      - image: cirrusci/flutter:1.20.2 
+    working_directory: ~/workflow
+    steps:
+      - run:  
+          name: Run Flutter analyze
+          command: |
+            set +e
+            mkdir -p analyze-results
+            OUTPUT="$(flutter analyze --write=analyze-results/results.txt)"
+            echo "$OUTPUT"
+            echo
+            if grep -q "error •" \<<< "$OUTPUT"; then
+                echo "flutter analyze found errors"
+                exit 1
+            else
+                echo "flutter analyze didn't find any errors (only warnings and info)"
+                exit 0
+            fi
 
-    #   - store_artifacts:
-    #       path: analyze-results/        
-
-    #   - run:
-    #       name: Run unit tests with junit formatter
-    #       command: |
-    #         export PATH="$PATH":"$HOME/.pub-cache/bin" 
-    #         export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
-    #         flutter pub global activate junitreport
-    #         mkdir -p test-results
-    #         flutter test --coverage --machine | tojunit --output test-results/unit.xml
+      - store_artifacts:
+          path: analyze-results/     
 
       - run:
-          name: Run emulator
-          background: true
+          name: Run unit tests with junit formatter
           command: |
-            # sdkmanager "system-images;android-29;default;x86_64"
-            sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
-            echo "====== TestAVD created ====="
-            # emulator -avd TestAVD -accel off -no-window
-            emulator -avd TestAVD -no-audio -no-window &
-            sleep 90s
-            flutter drive --target=./test_driver/complete_guide_app.dart 
+            export PATH="$PATH":"$HOME/.pub-cache/bin" 
+            export PATH="$PATH":"/usr/local/opt/flutter/bin/cache/dart-sdk/bin"
+            flutter pub global activate junitreport
+            mkdir -p test-results
+            flutter test --coverage --machine | tojunit --output test-results/unit.xml
+      
+      - store_test_results:
+          path: test-results
 
-    #   - store_test_results:
-    #       path: test-results
+      - run:
+          name: Generate code coverage HTML file
+          command: |
+            sudo apt-get update -qq -y
+            sudo apt-get install lcov -y
+            genhtml coverage/lcov.info -o coverage/html  
+              
+      - store_artifacts:
+          path: coverage/
 
-    #   - run:
-    #       name: Generate code coverage HTML file
-    #       command: |
-    #         sudo apt-get update -qq -y
-    #         sudo apt-get install lcov -y
-    #         genhtml coverage/lcov.info -o coverage/html  
-              
-    #   - store_artifacts:
-    #       path: coverage/
-              
       - run:
           name: Build the Android version
           command: flutter build apk --no-shrink
-  
+          
       - store_artifacts:
           path: build/app/outputs/
+
+  start_emulator:
+    docker:
+      - image: cirrusci/flutter:1.20.2 
+    working_directory: ~/workflow
+    steps:
+      - checkout
+        - run:
+            name: Run emulator
+            background:
+            command: |
+                # sdkmanager "system-images;android-29;default;x86_64"
+                sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
+                echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
+                echo "====== TestAVD created ====="
+                # emulator -avd TestAVD -accel off -no-window
+                emulator -avd TestAVD -no-audio -no-window
+
+  integration_tests:
+    docker:
+      - image: cirrusci/flutter:1.20.2 
+    working_directory: ~/workflow
+    steps:
+      - run:
+        name: Run emulator
+        command: |
+          sleep 90s
+          flutter drive --target=./test_driver/complete_guide_app.dart 
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - checkout_code
+      - build:
+          requires:
+            - checkout_code
+      - start_emulator:
+          requires:
+            - checkout_code
+      - integration_tests:
+          requires:
+            - start_emulator
