@@ -94,6 +94,7 @@ jobs:
             # echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x86"
             egrep -c '(vmx|svm)' /proc/cpuinfo
             # emulator -avd TestAVD -no-audio -no-window -gpu host
+            kvm-ok
       - run:
           name: wait for emulator
           no_output_timeout: 15m
