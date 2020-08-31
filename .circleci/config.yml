@@ -45,7 +45,7 @@ jobs:
           command: |
             sdkmanager "system-images;android-29;google_apis"
             sdkmanager --list | sed -e '/Available Packages/q'
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x86"
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis"
             emulator -avd TestAVD
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
