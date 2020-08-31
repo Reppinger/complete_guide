@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Run flutter_driver integration tests
           command: |
-            sdkmanager "system-images;android-29;google_apis;x86"
+            sdkmanager "system-images;android-29;google_apis"
             sdkmanager --list | sed -e '/Available Packages/q'
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x86"
             emulator -avd TestAVD
