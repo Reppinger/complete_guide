@@ -13,7 +13,7 @@ jobs:
           paths:
             - ~/workflow
           
-  build:
+  unit_test:
     docker:
       - image: cirrusci/flutter:1.20.2 
     working_directory: ~/workflow
@@ -61,13 +61,20 @@ jobs:
               
       - store_artifacts:
           path: coverage/
-
-#       - run:
-#           name: Build the Android version
-#           command: flutter build apk --no-shrink
+  build:
+    docker:
+      - image: cirrusci/flutter:1.20.2 
+    working_directory: ~/workflow
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Build the Android version
+          command: flutter build apk --no-shrink
           
-#       - store_artifacts:
-#           path: build/app/outputs/
+      - store_artifacts:
+          path: build/app/outputs/
 
 #   start_emulator:
 #     docker:
@@ -101,6 +108,9 @@ workflows:
   build-and-deploy:
     jobs:
       - checkout_code
+      - unit_test:
+          requires:
+            - checkout_code
       - build:
           requires:
             - checkout_code
