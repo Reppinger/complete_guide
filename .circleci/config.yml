@@ -95,16 +95,19 @@ jobs:
             # emulator -avd TestAVD -accel off -no-window
             emulator -avd TestAVD -no-audio -no-window
 
-#   integration_tests:
-#     docker:
-#       - image: cirrusci/flutter:1.20.2 
-#     working_directory: ~/workflow
-#     steps:
-#       - run:
-#         name: Run emulator
-#         command: |
-#           sleep 90s
-#           flutter drive --target=./test_driver/complete_guide_app.dart 
+  integration_tests:
+    docker:
+      - image: cirrusci/flutter:1.20.2 
+    working_directory: ~/workflow
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Execute integration tests
+          command: |
+          #   sleep 90s
+            flutter drive --target=./test_driver/complete_guide_app.dart 
 
 workflows:
   build-and-deploy:
@@ -119,6 +122,7 @@ workflows:
       - start_emulator:
           requires:
             - checkout_code
-    #   - integration_tests:
-    #       requires:
-    #         - start_emulator
+      - integration_tests:
+          requires:
+            - checkout_code
+            - unit_test
