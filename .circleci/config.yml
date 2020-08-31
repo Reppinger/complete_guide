@@ -41,10 +41,9 @@ jobs:
           command: |
             # sdkmanager --list
             sdkmanager "system-images;android-29;default;x86_64"
-            # sdkmanager --install "platform-tools" "platforms;android-29" "build-tools;29.0.2"
-            sdkmanager --list | sed -e '/Installed Packages/q'
+            # sdkmanager --list | sed -e '/Installed Packages/q'
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;default;x86_64"
-            emulator -avd TestAVD -gpu swiftshader_indirect
+            emulator -avd TestAVD -gpu off
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
       - store_test_results:
