@@ -43,7 +43,7 @@ jobs:
             # sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;default;x86_64"
             echo "====== TestAVD created ====="
-            emulator -avd TestAVD -accel off
+            emulator -avd TestAVD -accel off -no-window
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
       - store_test_results:
