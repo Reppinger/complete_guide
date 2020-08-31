@@ -93,16 +93,19 @@ jobs:
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
             echo "====== TestAVD created ====="
             emulator -avd TestAVD -no-audio -no-window
-            sleep 5m
       - run:
          name: wait for emulator
+         no_output_timeout: 15m
          command: |
+            sleep 5m
             adb devices
+            sleep 1m
             adb devices
+            sleep 1m
             adb devices
+            sleep 1m
             adb devices
-            adb devices
-            adb devices
+            sleep 1m
             adb devices
 
 #   start_emulator:
