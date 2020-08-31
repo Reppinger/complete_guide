@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Run flutter_driver integration tests
           command: |
-            sdkmanager --list all
+            sdkmanager --list
             sdkmanager "platforms;android-29"
             # sdkmanager --install "platform-tools" "platforms;android-29" "build-tools;29.0.2"
             # sdkmanager --list | sed -e '/Available Packages/q'
