@@ -90,7 +90,7 @@ jobs:
           background: true
           command: |
             set +e
-            sdkmanager "system-images;android-29;google_apis;x864_6" 
+            sdkmanager "system-images;android-29;google_apis;x64_86" 
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x64_86"
             egrep -c '(vmx|svm)' /proc/cpuinfo
             # emulator -avd TestAVD -no-audio -no-window -gpu host
