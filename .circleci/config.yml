@@ -78,13 +78,13 @@ jobs:
           path: build/app/outputs/
 
   start_emulator:
-    docker:
-      - image: cirrusci/flutter:1.20.2
+    machine:
+      - image: ubuntu-1604:202007-01 
     working_directory: ~/workflow
     steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+    #   - restore_cache:
+    #       keys:
+    #         - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Run emulator
           background: true
@@ -95,15 +95,15 @@ jobs:
             egrep -c '(vmx|svm)' /proc/cpuinfo
             # emulator -avd TestAVD -no-audio -no-window -gpu host
             kvm-ok
-      - run:
-          name: wait for emulator
-          no_output_timeout: 15m
-          command: |
-            sleep 7m
-            adb devices
-      - run:
-          name: Execute integration tests
-          command: flutter drive --target=./test_driver/complete_guide_app.dart 
+    #   - run:
+    #       name: wait for emulator
+    #       no_output_timeout: 15m
+    #       command: |
+    #         sleep 5m
+    #         adb devices
+    #   - run:
+    #       name: Execute integration tests
+    #       command: flutter drive --target=./test_driver/complete_guide_app.dart 
 
 #   start_emulator:
 #     docker:
