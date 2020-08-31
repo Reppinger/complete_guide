@@ -9,26 +9,26 @@ jobs:
     steps:
       - checkout
 
-#   build:
-#     docker:
-#       - image: cirrusci/flutter:1.20.2 
-#     working_directory: ~/workflow
-#     steps:
-#       - run:  
-#           name: Run Flutter analyze
-#           command: |
-#             set +e
-#             mkdir -p analyze-results
-#             OUTPUT="$(flutter analyze --write=analyze-results/results.txt)"
-#             echo "$OUTPUT"
-#             echo
-#             if grep -q "error •" \<<< "$OUTPUT"; then
-#                 echo "flutter analyze found errors"
-#                 exit 1
-#             else
-#                 echo "flutter analyze didn't find any errors (only warnings and info)"
-#                 exit 0
-#             fi
+  build:
+    docker:
+      - image: cirrusci/flutter:1.20.2 
+    working_directory: ~/workflow
+    steps:
+      - run:  
+          name: Run Flutter analyze
+          command: |
+            set +e
+            mkdir -p analyze-results
+            OUTPUT="$(flutter analyze --write=analyze-results/results.txt)"
+            echo "$OUTPUT"
+            echo
+            if grep -q "error •" \<<< "$OUTPUT"; then
+                echo "flutter analyze found errors"
+                exit 1
+            else
+                echo "flutter analyze didn't find any errors (only warnings and info)"
+                exit 0
+            fi
 
 #       - store_artifacts:
 #           path: analyze-results/     
@@ -94,9 +94,9 @@ workflows:
   build-and-deploy:
     jobs:
       - checkout_code
-    #   - build:
-    #       requires:
-    #         - checkout_code
+      - build:
+          requires:
+            - checkout_code
     #   - start_emulator:
     #       requires:
     #         - checkout_code
