@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   checkout_code:
     docker:
-      - image: circleci/android:api-28 
+      - image: cirrusci/flutter:1.20.2 
     working_directory: ~/workflow
     steps:
       - checkout
@@ -15,7 +15,7 @@ jobs:
           
   unit_test:
     docker:
-      - image: circleci/android:api-28 
+      - image: cirrusci/flutter:1.20.2 
     working_directory: ~/workflow
     steps:
       - restore_cache:
@@ -62,20 +62,47 @@ jobs:
       - store_artifacts:
           path: coverage/
   
-#   build:
-#     docker:
-#       - image: cirrusci/flutter:1.20.2 
-#     working_directory: ~/workflow
-#     steps:
-#       - restore_cache:
-#           keys:
-#             - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-#       - run:
-#           name: Build the Android version
-#           command: flutter build apk --no-shrink
+  build:
+    docker:
+      - image: cirrusci/flutter:1.20.2 
+    working_directory: ~/workflow
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Build the Android version
+          command: flutter build apk --no-shrink
           
-#       - store_artifacts:
-#           path: build/app/outputs/
+      - store_artifacts:
+          path: build/app/outputs/
+
+  start_emulator:
+    docker:
+      - image: cirrusci/flutter:1.20.2
+    working_directory: ~/workflow
+    steps:
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Run emulator
+          background: true
+          command: |
+            sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
+            echo "====== TestAVD created ====="
+            emulator -avd TestAVD -no-audio -no-window
+      -run:
+         name: wait for emulator
+         command: |
+            adb devices
+            adb devices
+            adb devices
+            adb devices
+            adb devices
+            adb devices
+            adb devices
 
 #   start_emulator:
 #     docker:
@@ -116,12 +143,12 @@ workflows:
       - unit_test:
           requires:
             - checkout_code
-    #   - build:
-    #       requires:
-    #         - checkout_code
-    #   - start_emulator:
-    #       requires:
-    #         - checkout_code
+      - build:
+          requires:
+            - checkout_code
+      - start_emulator:
+          requires:
+            - checkout_code
     #   - integration_tests:
     #       requires:
     #         - checkout_code
