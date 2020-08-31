@@ -94,19 +94,14 @@ jobs:
             echo "====== TestAVD created ====="
             emulator -avd TestAVD -no-audio -no-window
       - run:
-         name: wait for emulator
-         no_output_timeout: 15m
-         command: |
-            sleep 5m
+          name: wait for emulator
+          no_output_timeout: 15m
+          command: |
+            sleep 7m
             adb devices
-            sleep 1m
-            adb devices
-            sleep 1m
-            adb devices
-            sleep 1m
-            adb devices
-            sleep 1m
-            adb devices
+      - run:
+          name: Execute integration tests
+          command: flutter drive --target=./test_driver/complete_guide_app.dart 
 
 #   start_emulator:
 #     docker:
