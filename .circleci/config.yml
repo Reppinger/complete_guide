@@ -39,11 +39,11 @@ jobs:
       - run:
           name: Run flutter_driver integration tests
           command: |
-            # sdkmanager --list
+            sdkmanager --list
             # sdkmanager "system-images;android-29;default;x86_64"
             sdkmanager "system-images;android-25;google_apis;arm64-v8a"
             # sdkmanager --list | sed -e '/Installed Packages/q'
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
             emulator -avd TestAVD -noaudio -no-boot-anim -gpu off
             flutter drive --target=./test_driver/complete_guide_app.dart 
 
