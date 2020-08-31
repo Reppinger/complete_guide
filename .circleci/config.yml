@@ -40,10 +40,10 @@ jobs:
           name: Run flutter_driver integration tests
           command: |
             sdkmanager --list
-            sdkmanager "platforms;android-29"
+            sdkmanager "system-images;android-29;default;x86_64"
             # sdkmanager --install "platform-tools" "platforms;android-29" "build-tools;29.0.2"
             # sdkmanager --list | sed -e '/Available Packages/q'
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "platforms;android-29"
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;default;x86_64"
             # emulator -avd TestAVD
             # flutter drive --target=./test_driver/complete_guide_app.dart 
 
