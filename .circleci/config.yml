@@ -89,9 +89,9 @@ jobs:
           name: Run emulator
           background: true
           command: |
+            set +e
             sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
-            echo "====== TestAVD created ====="
             emulator -avd TestAVD -no-audio -no-window
       - run:
           name: wait for emulator
