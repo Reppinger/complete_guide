@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   checkout_code:
     docker:
-      - image: cirrusci/flutter:1.20.2 
+      - image: circleci/android:api-28 
     working_directory: ~/workflow
     steps:
       - checkout
@@ -15,7 +15,7 @@ jobs:
           
   unit_test:
     docker:
-      - image: cirrusci/flutter:1.20.2 
+      - image: circleci/android:api-28 
     working_directory: ~/workflow
     steps:
       - restore_cache:
@@ -62,52 +62,52 @@ jobs:
       - store_artifacts:
           path: coverage/
   
-  build:
-    docker:
-      - image: cirrusci/flutter:1.20.2 
-    working_directory: ~/workflow
-    steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Build the Android version
-          command: flutter build apk --no-shrink
+#   build:
+#     docker:
+#       - image: cirrusci/flutter:1.20.2 
+#     working_directory: ~/workflow
+#     steps:
+#       - restore_cache:
+#           keys:
+#             - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+#       - run:
+#           name: Build the Android version
+#           command: flutter build apk --no-shrink
           
-      - store_artifacts:
-          path: build/app/outputs/
+#       - store_artifacts:
+#           path: build/app/outputs/
 
-  start_emulator:
-    docker:
-      - image: cirrusci/flutter:1.20.2 
-    working_directory: ~/workflow
-    steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Run emulator
-          command: |
-            # sdkmanager "system-images;android-29;default;x86_64"
-            sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
-            echo "====== TestAVD created ====="
-            # emulator -avd TestAVD -accel off -no-window
-            emulator -avd TestAVD -no-audio -no-window
+#   start_emulator:
+#     docker:
+#       - image: cirrusci/flutter:1.20.2
+#     working_directory: ~/workflow
+#     steps:
+#       - restore_cache:
+#           keys:
+#             - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+#       - run:
+#           name: Run emulator
+#           command: |
+#             # sdkmanager "system-images;android-29;default;x86_64"
+#             sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
+#             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
+#             echo "====== TestAVD created ====="
+#             # emulator -avd TestAVD -accel off -no-window
+#             emulator -avd TestAVD -no-audio -no-window
 
-  integration_tests:
-    docker:
-      - image: cirrusci/flutter:1.20.2 
-    working_directory: ~/workflow
-    steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Execute integration tests
-          command: |
-            #   sleep 90s
-            flutter drive --target=./test_driver/complete_guide_app.dart 
+#   integration_tests:
+#     docker:
+#       - image: cirrusci/flutter:1.20.2 
+#     working_directory: ~/workflow
+#     steps:
+#       - restore_cache:
+#           keys:
+#             - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+#       - run:
+#           name: Execute integration tests
+#           command: |
+#             #   sleep 90s
+#             flutter drive --target=./test_driver/complete_guide_app.dart 
 
 workflows:
   build-and-deploy:
@@ -116,13 +116,13 @@ workflows:
       - unit_test:
           requires:
             - checkout_code
-      - build:
-          requires:
-            - checkout_code
-      - start_emulator:
-          requires:
-            - checkout_code
-      - integration_tests:
-          requires:
-            - checkout_code
-            - unit_test
+    #   - build:
+    #       requires:
+    #         - checkout_code
+    #   - start_emulator:
+    #       requires:
+    #         - checkout_code
+    #   - integration_tests:
+    #       requires:
+    #         - checkout_code
+    #         - unit_test
