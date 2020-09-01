@@ -95,12 +95,12 @@ jobs:
             egrep -c '(vmx|svm)' /proc/cpuinfo
             # emulator -avd TestAVD -no-audio -no-window -gpu host
             kvm-ok
-    #   - run:
-    #       name: wait for emulator
-    #       no_output_timeout: 15m
-    #       command: |
-    #         sleep 5m
-    #         adb devices
+      - run:
+          name: wait for emulator
+          no_output_timeout: 15m
+          command: |
+            sleep 2m
+            adb devices
     #   - run:
     #       name: Execute integration tests
     #       command: flutter drive --target=./test_driver/complete_guide_app.dart 
