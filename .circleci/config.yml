@@ -12,7 +12,21 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/workflow
-          
+
+  # Job needs to be done on EC2 emulator running on bare-metal VM    
+  # start_emulator:
+  #   docker:
+  #     - image: cirrusci/flutter:1.20.2
+  #   working_directory: ~/workflow
+  #   steps:
+  #     - restore_cache:
+  #         keys:
+  #           - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+  #     - run:
+  #         name: Run emulator
+  #         #probably not => background: true
+  #         command: #docker run command executed  on EC2 VM for correct emulator
+  
   unit_test:
     docker:
       - image: cirrusci/flutter:1.20.2 
@@ -77,79 +91,47 @@ jobs:
       - store_artifacts:
           path: build/app/outputs/
 
-  start_emulator:
-    docker:
-      - image: cirrusci/flutter:1.20.2
-    working_directory: ~/workflow
-    steps:
-      - restore_cache:
-          keys:
-            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-      - run:
-          name: Run emulator
-          background: true
-          command: |
-            sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
-            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
-            echo "====== TestAVD created ====="
-            emulator -avd TestAVD -no-audio -no-window -wipe-data
-            # -ports 5554,5555
-      - run:
-          name: wait for emulator
-          no_output_timeout: 15m
-          command: |
-            sleep 6m
-            adb devices
-      - run:
-          name: Execute integration tests
-          command: flutter drive --target=./test_driver/complete_guide_app.dart 
+  # deploy_to_emulator:
+  #   docker:
+  #     - image: cirrusci/flutter:1.20.2
+  #   working_directory: ~/workflow
+  #   steps:
+  #     - restore_cache:
+  #         keys:
+  #           - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+  #     - run:
+  #         name: Deploy apk to emulator
+  #         command: 
 
-#   start_emulator:
-#     docker:
-#       - image: cirrusci/flutter:1.20.2
-#     working_directory: ~/workflow
-#     steps:
-#       - restore_cache:
-#           keys:
-#             - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-#       - run:
-#           name: Run emulator
-#           command: |
-#             # sdkmanager "system-images;android-29;default;x86_64"
-#             sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
-#             echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
-#             echo "====== TestAVD created ====="
-#             # emulator -avd TestAVD -accel off -no-window
-#             emulator -avd TestAVD -no-audio -no-window
-
-#   integration_tests:
-#     docker:
-#       - image: cirrusci/flutter:1.20.2 
-#     working_directory: ~/workflow
-#     steps:
-#       - restore_cache:
-#           keys:
-#             - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
-#       - run:
-#           name: Execute integration tests
-#           command: |
-#             #   sleep 90s
-#             flutter drive --target=./test_driver/complete_guide_app.dart 
+  # integration_tests:
+  #   docker:
+  #     - image: cirrusci/flutter:1.20.2 
+  #   working_directory: ~/workflow
+  #   steps:
+  #     - restore_cache:
+  #         keys:
+  #           - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+  #     - run:
+  #         name: Execute integration tests
+  #         command: | #run flutter-drive on EC2 VM, I assume?
+  #           flutter drive --target=./test_driver/complete_guide_app.dart 
 
 workflows:
   build-and-deploy:
     jobs:
       - checkout_code
+      # - start_emulator:
+      #     requires:
+      #       - checkout_code
       - unit_test:
           requires:
             - checkout_code
       - build:
           requires:
             - checkout_code
-      - start_emulator:
-          requires:
-            - checkout_code
-    #   - integration_tests:
-    #       requires:
-    #         - checkout_code
-    #         - unit_test
+      # - deploy_to_emulator:
+      #     requires:
+      #       - build
+      # - integration_tests:
+      #     requires:
+      #       - deploy_to_emulator
