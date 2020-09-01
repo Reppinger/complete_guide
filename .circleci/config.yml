@@ -89,17 +89,16 @@ jobs:
           name: Run emulator
           background: true
           command: |
-            set +e
-            # sdkmanager "system-images;android-29;google_apis;x86" 
-            # echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-29;google_apis;x86"
-            egrep -c '(vmx|svm)' /proc/cpuinfo
-            # emulator -avd TestAVD -no-audio -no-window -gpu host
-            kvm-ok
+            sdkmanager "system-images;android-25;google_apis;arm64-v8a" 
+            echo "no" | avdmanager --verbose create avd --force --name TestAVD --package "system-images;android-25;google_apis;arm64-v8a"
+            echo "====== TestAVD created ====="
+            emulator -avd TestAVD -no-audio -no-window -wipedata
+            # -ports 5554,5555
       - run:
           name: wait for emulator
           no_output_timeout: 15m
           command: |
-            sleep 7m
+            sleep 6m
             adb devices
       - run:
           name: Execute integration tests
