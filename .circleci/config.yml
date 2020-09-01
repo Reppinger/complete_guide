@@ -79,7 +79,7 @@ jobs:
 
   start_emulator:
     machine:
-      - image: ubuntu-1604:202007-01 
+      image: ubuntu-1604:202007-01 
     working_directory: ~/workflow
     steps:
     #   - restore_cache:
