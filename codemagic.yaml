@@ -47,9 +47,9 @@ workflows:
           if grep -q "error •" <<< "$OUTPUT"; then
             echo "flutter analyze found errors"
             exit 1
-          # else
-          #   echo "flutter analyze didn't find any errors (only warnings and info)"
-          #   exit 0
+          else
+            echo "flutter analyze didn't find any errors (only warnings and info)"
+            exit 0
           fi
 
       - name: Flutter drive tests
