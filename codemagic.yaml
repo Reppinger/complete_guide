@@ -46,7 +46,7 @@ workflows:
         script: |
           # How to generate html coverage report?
           mkdir -p test-results
-          flutter test --machine > test-results/flutter.json
+          cd . && flutter test --machine > test-results/flutter.json
         test_report: test-results/flutter.json
 
       - name: Flutter drive tests
