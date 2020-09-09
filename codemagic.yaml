@@ -17,7 +17,7 @@ workflows:
           include: true
           source: false
     scripts:
-      - name: all the things
+      - name: Launch the emulator
         script: |
           flutter emulators --launch emulator
       - name: Set up debug keystore
@@ -32,19 +32,28 @@ workflows:
             -keyalg 'RSA' \
             -keysize 2048 \
             -validity 10000
-      - name: Setup local properties
+
+      - name: Set up local environment
         script: |
           echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
           cd . && flutter packages pub get
-          cd . && flutter analyze --write=analyzer-output.txt
-          cd . && flutter drive --target=test_driver/complete_guide_app.dart
-          cd . && flutter build apk --debug
+
+      - name: Flutter analyze
+        script: cd . && flutter analyze --write=analyzer-output.txt
+
+      - name: Flutter drive tests
+        script: cd . && flutter drive --target=test_driver/complete_guide_app.dart
+
+      - name: Flutter build Android
+        script: cd . && flutter build apk --debug
+
       - name: Unit tests
         script: |
           # What about coverage?
           mkdir -p test-results
           flutter test --machine > test-results/flutter.json
         test_report: test-results/flutter.json
+
     artifacts:
       - build/**/outputs/**/*.apk
       - build/**/outputs/**/*.aab
