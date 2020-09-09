@@ -20,6 +20,7 @@ workflows:
       - name: Launch the emulator
         script: |
           flutter emulators --launch emulator
+
       - name: Set up debug keystore
         script: |
           rm -f ~/.android/debug.keystore
@@ -43,9 +44,8 @@ workflows:
 
       - name: Unit tests
         script: |
-          # What about coverage?
           mkdir -p test-results
-          flutter test --machine > test-results/flutter.json
+          flutter test --coverage --machine > test-results/flutter.json
         test_report: test-results/flutter.json
 
       - name: Flutter drive tests
@@ -60,6 +60,7 @@ workflows:
       - build/**/outputs/**/mapping.txt
       - flutter_drive.log
       - analyzer-output.txt
+      - coverage/**
     publishing:
       email:
         recipients:
