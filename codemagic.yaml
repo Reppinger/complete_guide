@@ -40,7 +40,8 @@ workflows:
           cd . && flutter packages pub get
 
       - name: Flutter analyze
-        script: cd . && flutter analyze --write=analyzer-output.txt
+        script: |
+          cd . && flutter analyze --write=analyzer-output.txt
 
       - name: Flutter drive tests
         script: cd . && flutter drive --target=test_driver/complete_guide_app.dart
