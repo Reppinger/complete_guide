@@ -17,32 +17,34 @@ workflows:
           include: true
           source: false
     scripts:
-      - flutter emulators --launch emulator
-      - |
-        # set up debug keystore
-        rm -f ~/.android/debug.keystore
-        keytool -genkeypair \
-          -alias androiddebugkey \
-          -keypass android \
-          -keystore ~/.android/debug.keystore \
-          -storepass android \
-          -dname 'CN=Android Debug,O=Android,C=US' \
-          -keyalg 'RSA' \
-          -keysize 2048 \
-          -validity 10000
-      - |
-        # set up local properties
-        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
-      - cd . && flutter packages pub get
-      - cd . && flutter analyze --write=analyzer-output.txt
-      - cd . && flutter drive --target=test_driver/complete_guide_app.dart
-      - cd . && flutter test --machine --coverage
+      - name: all the things
+        script: |
+          flutter emulators --launch emulator
+          # set up debug keystore
+          rm -f ~/.android/debug.keystore
+          keytool -genkeypair \
+            -alias androiddebugkey \
+            -keypass android \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -dname 'CN=Android Debug,O=Android,C=US' \
+            -keyalg 'RSA' \
+            -keysize 2048 \
+            -validity 10000
+      - name: More of the things
+        script: |
+          # set up local properties
+          echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+          cd . && flutter packages pub get
+          cd . && flutter analyze --write=analyzer-output.txt
+          cd . && flutter drive --target=test_driver/complete_guide_app.dart
+          cd . && flutter test --machine --coverage
+          cd . && flutter build apk --debug
       # - name: Unit tests
       #   script: |
       #     mkdir -p test-results
       #    flutter test --machine > test-results/flutter.json
       #   test_report: test-results/flutter.json
-      - cd . && flutter build apk --debug
     artifacts:
       - build/**/outputs/**/*.apk
       - build/**/outputs/**/*.aab
