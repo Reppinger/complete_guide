@@ -44,6 +44,7 @@ workflows:
 
       - name: Unit tests
         script: |
+          # How to generate html coverage report?
           mkdir -p test-results
           flutter test --coverage --machine > test-results/flutter.json
         test_report: test-results/flutter.json
