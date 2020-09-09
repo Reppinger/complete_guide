@@ -40,7 +40,7 @@ workflows:
 
       - name: Flutter analyze
         script: cd . && flutter analyze --write=analyzer-output.txt
-        
+
       - name: Unit tests
         script: |
           # What about coverage?
@@ -48,9 +48,8 @@ workflows:
           flutter test --machine > test-results/flutter.json
         test_report: test-results/flutter.json
 
-
-      # - name: Flutter drive tests
-      #   script: cd . && flutter drive --target=test_driver/complete_guide_app.dart
+      - name: Flutter drive tests
+        script: cd . && flutter drive --target=test_driver/complete_guide_app.dart
 
       - name: Flutter build Android
         script: cd . && flutter build apk --debug
