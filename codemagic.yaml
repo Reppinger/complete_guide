@@ -41,7 +41,18 @@ workflows:
 
       - name: Flutter analyze
         script: |
-          cd . && flutter analyze --write=analyzer-output.txt
+          #cd . && flutter analyze --write=analyzer-output.txt
+          set +e
+          OUTPUT="$(flutter analyze --write=analyzer-output.txt)"
+          echo "$OUTPUT"
+          echo
+          if grep -q "error •" \<<< "$OUTPUT"; then
+              echo "flutter analyze found errors"
+              exit 1
+          else
+              echo "flutter analyze didn't find any errors (only warnings and info)"
+              exit 0
+          fi
 
       - name: Flutter drive tests
         script: cd . && flutter drive --target=test_driver/complete_guide_app.dart
