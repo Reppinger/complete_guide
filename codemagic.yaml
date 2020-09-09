@@ -35,8 +35,8 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - cd . && flutter packages pub get
       - cd . && flutter analyze --write=analyzer-output.txt
-      - cd . && flutter test --coverage
       - cd . && flutter drive --target=test_driver/complete_guide_app.dart
+      - cd . && flutter test --coverage
       - cd . && flutter build apk --debug
     artifacts:
       - build/**/outputs/**/*.apk
