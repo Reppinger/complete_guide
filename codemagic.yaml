@@ -36,7 +36,12 @@ workflows:
       - cd . && flutter packages pub get
       - cd . && flutter analyze --write=analyzer-output.txt
       - cd . && flutter drive --target=test_driver/complete_guide_app.dart
-      - cd . && flutter test --machine --coverage
+      - #cd . && flutter test --machine --coverage
+      - name: Unit tests
+        script: |
+          mkdir -p test-results
+         flutter test --machine > test-results/flutter.json
+        test_report: test-results/flutter.json
       - cd . && flutter build apk --debug
     artifacts:
       - build/**/outputs/**/*.apk
