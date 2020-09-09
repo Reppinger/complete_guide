@@ -20,7 +20,8 @@ workflows:
       - name: all the things
         script: |
           flutter emulators --launch emulator
-          # set up debug keystore
+      - name: Set up debug keystore
+        script: |
           rm -f ~/.android/debug.keystore
           keytool -genkeypair \
             -alias androiddebugkey \
@@ -31,20 +32,19 @@ workflows:
             -keyalg 'RSA' \
             -keysize 2048 \
             -validity 10000
-      - name: More of the things
+      - name: Setup local properties
         script: |
-          # set up local properties
           echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
           cd . && flutter packages pub get
           cd . && flutter analyze --write=analyzer-output.txt
           cd . && flutter drive --target=test_driver/complete_guide_app.dart
-          cd . && flutter test --machine --coverage
           cd . && flutter build apk --debug
-      # - name: Unit tests
-      #   script: |
-      #     mkdir -p test-results
-      #    flutter test --machine > test-results/flutter.json
-      #   test_report: test-results/flutter.json
+      - name: Unit tests
+        script: |
+          # What about coverage?
+          mkdir -p test-results
+          flutter test --machine > test-results/flutter.json
+        test_report: test-results/flutter.json
     artifacts:
       - build/**/outputs/**/*.apk
       - build/**/outputs/**/*.aab
@@ -54,4 +54,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - r20@eppingers.name
+          - randy@eppingerconsulting.com
