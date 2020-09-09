@@ -53,7 +53,7 @@ workflows:
           fi
 
       - name: Flutter drive tests
-        script: cd . && flutter drive --target=test_driver/complete_guide_app.dart
+        script: flutter drive --target=test_driver/complete_guide_app.dart
 
       - name: Unit tests
         script: |
