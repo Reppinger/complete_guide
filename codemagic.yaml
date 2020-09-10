@@ -25,10 +25,6 @@ workflows:
           adb devices
           sleep 10
           adb devices
-          sleep 10
-          adb devices
-          sleep 10
-          adb devices
 
       - name: Set up debug keystore
         script: |
