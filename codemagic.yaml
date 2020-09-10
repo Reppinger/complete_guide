@@ -29,8 +29,6 @@ workflows:
           adb devices
           sleep 10
           adb devices
-          sleep 10
-          adb devices
 
       - name: Set up debug keystore
         script: |
@@ -72,10 +70,6 @@ workflows:
 
       - name: Flutter drive tests
         script: |
-          adb devices
-          sleep 10
-          adb devices
-          sleep 10
           adb devices
           flutter drive --target=test_driver/complete_guide_app.dart
 
