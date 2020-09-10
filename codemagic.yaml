@@ -63,6 +63,7 @@ workflows:
         script: |
           adb devices
           flutter drive --target=test_driver/complete_guide_app.dart
+          adb devices
 
       - name: Flutter build Android
         script: cd . && flutter build apk --debug
