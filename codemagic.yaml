@@ -20,7 +20,6 @@ workflows:
       - name: Launch the emulator
         script: |
           flutter emulators --launch emulator
-          sleep 1
           adb devices
 
       - name: Set up debug keystore
