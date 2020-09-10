@@ -61,7 +61,7 @@ workflows:
 
       - name: Generate coverage HTML report
         script: |
-          brew install lcov
+          HOMEBREW_NO_AUTO_UPDATE=1 brew install lcov
           genhtml coverage/lcov.info -o coverage/html
 
       # This appears to be unnecessary, now.
