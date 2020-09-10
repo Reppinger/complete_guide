@@ -55,10 +55,15 @@ workflows:
 
       - name: Unit tests
         script: |
-          # How to generate html coverage report?
           mkdir -p test-results
           cd . && flutter test --coverage --machine > test-results/flutter.json
         test_report: test-results/flutter.json
+
+      - name: Generate coverage HTML report
+        script: |
+          brew doctor
+          brew install lcov
+          genhtml coverage/lcov.info -o coverage/html
 
       - name: Wait for emulator device
         script: |
