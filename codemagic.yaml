@@ -20,6 +20,17 @@ workflows:
       - name: Launch the emulator
         script: |
           flutter emulators --launch emulator
+          adb devices
+          sleep 10
+          adb devices
+          sleep 10
+          adb devices
+          sleep 10
+          adb devices
+          sleep 10
+          adb devices
+          sleep 10
+          adb devices
 
       - name: Set up debug keystore
         script: |
@@ -61,10 +72,12 @@ workflows:
 
       - name: Flutter drive tests
         script: |
-          sleep 30
+          adb devices
+          sleep 10
+          adb devices
+          sleep 10
           adb devices
           flutter drive --target=test_driver/complete_guide_app.dart
-          adb devices
 
       - name: Flutter build Android
         script: cd . && flutter build apk --debug
