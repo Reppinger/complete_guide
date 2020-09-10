@@ -64,10 +64,19 @@ workflows:
           cd . && flutter test --coverage --machine > test-results/flutter.json
         test_report: test-results/flutter.json
 
-      - name: Flutter drive tests
+      - name: Wait for emulator device
         script: |
-          adb devices
-          flutter drive --target=test_driver/complete_guide_app.dart
+          ADB_OUTPUT=""
+          tries=0
+          until grep -q "emulator-5554" <<< $ADB_OUTPUT || [ $tries -gt 10 ]; do
+            ADB_OUTPUT="$(adb devices)"
+            echo $ADB_OUTPUT
+            let tries+=1
+            sleep 1
+          done
+
+      - name: Flutter drive tests
+        script: flutter drive --target=test_driver/complete_guide_app.dart
 
       - name: Flutter build Android
         script: cd . && flutter build apk --debug
