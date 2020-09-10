@@ -63,10 +63,10 @@ workflows:
 
       - name: Wait for emulator device
         script: |
-          max_one_second_tries=10
+          MAX_ONE_SECOND_TRIES=10
           ADB_OUTPUT=""
           tries=0
-          until grep -q "emulator-5554" <<< $ADB_OUTPUT || [ $tries -gt max_one_second_tries ]; do
+          until grep -q "emulator-5554" <<< $ADB_OUTPUT || [ $tries -gt $MAX_ONE_SECOND_TRIES ]; do
             ADB_OUTPUT="$(adb devices)"
             echo $ADB_OUTPUT
             let tries+=1
