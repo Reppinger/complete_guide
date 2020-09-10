@@ -61,21 +61,21 @@ workflows:
 
       - name: Generate coverage HTML report
         script: |
-          brew doctor
           brew install lcov
           genhtml coverage/lcov.info -o coverage/html
 
-      - name: Wait for emulator device
-        script: |
-          MAX_ONE_SECOND_TRIES=10
-          ADB_OUTPUT=""
-          tries=0
-          until grep -q "emulator-5554" <<< $ADB_OUTPUT || [ $tries -gt $MAX_ONE_SECOND_TRIES ]; do
-            ADB_OUTPUT="$(adb devices)"
-            echo $ADB_OUTPUT
-            let tries+=1
-            sleep 1
-          done
+      # This appears to be unnecessary, now.
+      # - name: Wait for emulator device
+      #   script: |
+      #     MAX_ONE_SECOND_TRIES=10
+      #     ADB_OUTPUT=""
+      #     tries=0
+      #     until grep -q "emulator-5554" <<< $ADB_OUTPUT || [ $tries -gt $MAX_ONE_SECOND_TRIES ]; do
+      #       ADB_OUTPUT="$(adb devices)"
+      #       echo $ADB_OUTPUT
+      #       let tries+=1
+      #       sleep 1
+      #     done
 
       - name: Flutter drive tests
         script: flutter drive --target=test_driver/complete_guide_app.dart
