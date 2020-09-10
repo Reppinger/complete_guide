@@ -59,13 +59,13 @@ workflows:
           cd . && flutter test --coverage --machine > test-results/flutter.json
         test_report: test-results/flutter.json
 
-      - name: Flutter build Android
-        script: cd . && flutter build apk --debug
-
       - name: Flutter drive tests
         script: |
           adb devices
           flutter drive --target=test_driver/complete_guide_app.dart
+
+      - name: Flutter build Android
+        script: cd . && flutter build apk --debug
 
     artifacts:
       - build/**/outputs/**/*.apk
