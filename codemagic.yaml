@@ -61,6 +61,7 @@ workflows:
 
       - name: Flutter drive tests
         script: |
+          sleep 30
           adb devices
           flutter drive --target=test_driver/complete_guide_app.dart
           adb devices
